@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post("user-email", "App\Http\Controllers\EmailController@enviarEmailRecuperacaoSenha");
 
+Route::get('3f', "App\Http\Controllers\PerguntaController@getDatasComFiltro");
+
     Route::get('3.1', "App\Http\Controllers\PerguntaController@getDatas");
     Route::get('3', "App\Http\Controllers\PerguntaController@getData");
 

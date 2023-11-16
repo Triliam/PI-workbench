@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Repositories\PerguntaRepository;
 use Illuminate\Support\Facades\DB;
 use App\Models\Resposta;
-
+use App\Repositories\TemaRepository;
 
 class PerguntaController extends Controller
 {
@@ -62,11 +62,12 @@ class PerguntaController extends Controller
                 'user_id' => $request->user_id,
                 'pergunta' => $request->pergunta
             ]);
-            $pergunta->pergunta_sugerida = true;
-
+            $pergunta->pergunta_sugerida = 1;
+            $pergunta->pergunta_estado = 0;
+            $pergunta->save();
             //$resposta = 'Em breve sua pergunta será resposdida';
             $resposta = $request->input('resposta', 'Responda aqui a pergunta do aluno!');
-            $pergunta->save();
+
             Resposta::create([
                 'pergunta_id' => $pergunta->id,
                 'resposta' => $resposta
@@ -77,14 +78,16 @@ class PerguntaController extends Controller
 
     public function storeTogether(Request $request) {
 
-        $pergSugerida = false;
+        $pergSugerida = 0;
+
         $pergunta = Pergunta::create([
             'tema_id' => $request->tema_id,
             'user_id' => $request->user_id,
             'pergunta' => $request->pergunta,
-            'pergunta_sugerida' => $pergSugerida
+            'pergunta_sugerida' => $pergSugerida,
+            'pergunta_estado' => $request->pergunta_estado
         ]);
-
+ // $pergunta->pergunta_sugerida = 0;
         Resposta::create([
             'pergunta_id' => $pergunta->id,
             'resposta' => $request->resposta
@@ -132,7 +135,9 @@ class PerguntaController extends Controller
         $pergunta = $this->pergunta->find($id);
         $pergunta->pergunta = $request->input('pergunta');
         $pergunta->tema_id = $request->input('tema_id');
-        $pergunta->pergunta_sugerida = false;
+        $pergunta->pergunta_estado = $request->input('pergunta_estado');
+        $pergunta->pergunta_sugerida = 0;
+
         $pergunta->save();
 
         $resposta = Resposta::where('pergunta_id', $id)->first();
@@ -183,7 +188,7 @@ class PerguntaController extends Controller
             'icones' => $icones,
         ]);
     }
-
+//separar as perguntas sugeridas em outra array
     public function indexFaq() {
         $result = DB::table('temas')
         ->join('perguntas', 'temas.id', '=', 'perguntas.tema_id')
@@ -203,13 +208,50 @@ class PerguntaController extends Controller
         return response()->json($result);
     }
 
+    public function retornaPerguntasOffline() {
+        $result = Pergunta::where('pergunta_estado', 0)->with('resposta')->get();
+
+        return response()->json($result);
+    }
+
+    public function retornaPerguntasAluno() {
+        $result = Pergunta::where('pergunta_sugerida', 1)->with('resposta')->get();
+
+        return response()->json($result);
+    }
+
     public function getDatas() {
+        $perguntasAluno = $this->retornaPerguntasAluno();
+        $perguntasOffline = $this->retornaPerguntasOffline();
         $perguntas = $this->indexFaq();
         $temas = $this->retornaTemas();
         $icones = Icone::all();
 
         return response()->json([
-            'perguntas' => $perguntas,
+            'perguntasAluno' => $perguntasAluno,
+            'perguntasOffline' => $perguntasOffline,
+            'perguntasOnline' => $perguntas,
+            'temas' => $temas,
+            'icones' => $icones,
+        ]);
+    }
+
+    public function getDatasComFiltro(Request $request) {
+        $perguntaRepository = new PerguntaRepository($this->pergunta);
+        if($request->has('filtro')){
+            $perguntaRepository->filtro($request->filtro);
+        }
+        $perguntaRepository = $this->indexFaq();
+
+        $temaRepository = new TemaRepository($this->tema);
+        if($request->has('filtro')){
+            $temaRepository->filtro($request->filtro);
+        }
+        $temaRepository = $this->retornaTemas();
+        $icones = Icone::all();
+
+        return response()->json([
+            'perguntas' => $perguntaRepository,
             'temas' => $temas,
             'icones' => $icones,
         ]);
