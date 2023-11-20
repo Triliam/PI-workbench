@@ -66,7 +66,7 @@ Route::post('esqueci-minha-senha','App\Http\Controllers\EmailController@enviarNo
 
 
 
-//Prefix pra l0 para adm, l1 colab, l2 aluno
+//Prefix pra l0 para aluno, l1 colab, l2 adm
 
 //ROTAS ADM
 Route::prefix('l2')->middleware('jwt.auth')->group(function() {

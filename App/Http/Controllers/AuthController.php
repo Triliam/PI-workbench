@@ -100,11 +100,12 @@ class AuthController extends Controller
 
         $user = auth()->user();
         $id = $user->id;
+        
         if($user->level === 0) {
 
             $arrayPerguntas =[];
             $perguntas = Pergunta::all();
-            
+
             foreach($perguntas as $p) {
                 if($p->pergunta_estado === 1) {
                     if($p->pergunta_atualizacao === 1 or $p->user_id == $id){
@@ -118,6 +119,7 @@ class AuthController extends Controller
             'user' => auth()->user(),
             'perguntas' => $arrayPerguntas]);
         }
+        return response()->json(['user' => auth()->user()]);
     }
 }
 
