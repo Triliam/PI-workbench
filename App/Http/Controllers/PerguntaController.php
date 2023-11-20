@@ -265,6 +265,7 @@ class PerguntaController extends Controller
         ->join('perguntas', 'temas.id', '=', 'perguntas.tema_id')
         ->join('respostas', 'perguntas.id', '=', 'respostas.pergunta_id')
         ->select('temas.tema', 'temas.icone', 'perguntas.id', 'perguntas.pergunta', 'respostas.resposta')
+        ->where('perguntas.pergunta_estado', 1)
         ->orderBy('perguntas.id', 'desc')
         ->get();
 
@@ -280,10 +281,17 @@ class PerguntaController extends Controller
     }
 
     public function retornaPerguntasOffline() {
-        $result = Pergunta::where('pergunta_estado', 0)->with('tema', 'resposta')->get();
+        $result = DB::table('temas')
+        ->join('perguntas', 'temas.id', '=', 'perguntas.tema_id')
+        ->join('respostas', 'perguntas.id', '=', 'respostas.pergunta_id')
+        ->select('temas.tema', 'temas.icone', 'perguntas.id', 'perguntas.pergunta', 'respostas.resposta')
+        ->where('perguntas.pergunta_estado', 0)
+        ->orderBy('perguntas.id', 'desc')
+        ->get();
 
         return response()->json($result);
     }
+
 
     public function retornaPerguntasOnline() {
         $result = Pergunta::where('pergunta_estado', 1)->with('tema','resposta')->get();
@@ -292,7 +300,12 @@ class PerguntaController extends Controller
     }
 
     public function retornaPerguntasAluno() {
-        $result = Pergunta::where('pergunta_sugerida', 1)->with('resposta')->get();
+        $result = DB::table('perguntas')
+        ->join('respostas', 'perguntas.id', '=', 'respostas.pergunta_id')
+        ->select('perguntas.id', 'perguntas.pergunta', 'respostas.resposta')
+        ->where('perguntas.pergunta_sugerida', 1)
+        ->orderBy('perguntas.id', 'desc')
+        ->get();
 
         return response()->json($result);
     }
@@ -300,8 +313,8 @@ class PerguntaController extends Controller
     public function getDatas() {
         $perguntasAluno = $this->retornaPerguntasAluno();
         $perguntasOffline = $this->retornaPerguntasOffline();
-        // $perguntas = $this->indexFaq();
-        $perguntas = $this->retornaPerguntasOnline();
+        $perguntas = $this->indexFaq();
+        //$perguntas = $this->retornaPerguntasOnline();
         $temas = $this->retornaTemas();
         $icones = Icone::all();
 
