@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Pergunta extends Model
 {
     use HasFactory;
-    protected $fillable = ['tema_id', 'user_id', 'pergunta', 'pergunta_sugerida'];
-    protected $casts = [
-        'pergunta_sugerida' => 'boolean',
-    ];
-    
+    protected $fillable = ['tema_id', 'user_id', 'pergunta', 'pergunta_sugerida', 'pergunta_estado', 'pergunta_atualizacao'];
+    // protected $casts = [
+    //     'pergunta_sugerida' => 'boolean',
+    // ];
+
     public function rules () {
         return [
             'tema_id' => 'exists:temas,id',

@@ -23,10 +23,24 @@ use Illuminate\Support\Facades\Route;
 
 
 //ROTAS PUBLICAS
+//Route::get("tpr/{id}", "App\Http\Controllers\TemaController@getEmCascata");
 
-Route::post("user-email", "App\Http\Controllers\EmailController@enviarEmailRecuperacaoSenha");
+//rotas notificaçoes ANALIZAR!!!!
+//rotas forçam a mudança das colunas pergunta_atualizacao e pergunta_estado
+// Route::post('notf.0/{id}', "App\Http\Controllers\PerguntaController@perguntaAtualizacao0");
+// Route::get('notf.1/{id}', "App\Http\Controllers\PerguntaController@perguntaAtualizacao1");
+// Route::get('per.on.1/{id}', "App\Http\Controllers\PerguntaController@perguntaOnline1");
+// Route::get('per.off.0/{id}', "App\Http\Controllers\PerguntaController@perguntaOffline0");
 
-Route::get('3f', "App\Http\Controllers\PerguntaController@getDatasComFiltro");
+//Rotas notificações que exibem o status das perguntas
+Route::get('notf/{id}', "App\Http\Controllers\PerguntaController@perguntaAtualizacao");
+Route::get('est/{id}', "App\Http\Controllers\PerguntaController@perguntaEstado");
+
+Route::post('esqueci-minha-senha','App\Http\Controllers\EmailController@enviarNovaSenha');
+
+
+//Route::get('3f', "App\Http\Controllers\PerguntaController@getDatasComFiltro");
+//Route::get('pa', "App\Http\Controllers\PerguntaController@retornaPerguntaAtualizacao");
 
     Route::get('3.1', "App\Http\Controllers\PerguntaController@getDatas");
     Route::get('3', "App\Http\Controllers\PerguntaController@getData");
@@ -56,6 +70,10 @@ Route::get('3f', "App\Http\Controllers\PerguntaController@getDatasComFiltro");
 
 //ROTAS ADM
 Route::prefix('l2')->middleware('jwt.auth')->group(function() {
+
+    Route::post('esqueci-minha-senha', 'App\Http\Controllers\EmailController@enviarNovaSenha');
+
+    Route::patch('users/block/{id}', 'App\Http\Controllers\UserController@blockUser');
 
     Route::get("pergs", "App\Http\Controllers\PerguntaController@retorna");
 
@@ -103,11 +121,15 @@ Route::prefix('l2')->middleware('jwt.auth')->group(function() {
     //ROTAS COLABORADORES
     Route::prefix('l1')->middleware('jwt.auth')->group(function() {
 
+        Route::post('esqueci-minha-senha', 'App\Http\Controllers\EmailController@enviarNovaSenha');
+        Route::patch('users/block/{id}', 'App\Http\Controllers\UserController@blockUser');
+
         Route::post("user", "App\Http\Controllers\UserController@store");
         Route::patch("user/{user}", "App\Http\Controllers\UserController@update");
         Route::put("user/{user}", "App\Http\Controllers\UserController@update");
         Route::delete("user/{user}", "App\Http\Controllers\UserController@destroy");
         Route::get("users", "App\Http\Controllers\UserController@getUsersWithLevelOne");
+        Route::patch('users/block/{id}', 'App\Http\Controllers\UserController@blockUser');
 
         Route::post("tema", "App\Http\Controllers\TemaController@store");
         Route::patch("tema/{tema}", "App\Http\Controllers\TemaController@update");
@@ -137,6 +159,8 @@ Route::prefix('l2')->middleware('jwt.auth')->group(function() {
 
     //ROTAS ALUNOS
     Route::prefix('l0')->middleware('jwt.auth')->group(function() {
+
+        Route::post('esqueci-minha-senha', 'App\Http\Controllers\EmailController@enviarNovaSenha');
 
         Route::post("pergs", "App\Http\Controllers\PerguntaController@storeAluno");
         Route::post('logout', 'App\Http\Controllers\AuthController@logout');

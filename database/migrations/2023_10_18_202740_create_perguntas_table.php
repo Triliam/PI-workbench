@@ -20,6 +20,7 @@ class CreatePerguntasTable extends Migration
             $table->string('pergunta', 5000);
             $table->tinyInteger('pergunta_sugerida')->defalt(0);
             $table->tinyInteger('pergunta_estado')->defalt(0);
+            $table->tinyInteger('pergunta_atualizacao')->defalt(0);
             $table->timestamps();
 
             $table->foreign('tema_id')->references('id')->on('temas');

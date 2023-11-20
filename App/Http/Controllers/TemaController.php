@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tema;
 use Illuminate\Http\Request;
 use App\Repositories\TemaRepository;
+use Illuminate\Support\Facades\DB;
 
 class TemaController extends Controller
 {
@@ -107,4 +108,30 @@ class TemaController extends Controller
         return ['msg' => 'Tema removido!'];
     }
 //deletar em cascata desativar em cascata soft-delete
+public function deletarPerguntasPorTema($temaId)
+{
+    // Executar a query para deletar as perguntas com tema_id igual ao temaId fornecido
+    DB::table('perguntas')
+        ->where('tema_id', $temaId)
+        ->delete();
+
+    return response()->json("Perguntas deletadas para o tema com ID $temaId");
+}
+
+public function deletarRespostasPorPerguntas($temaId)
+{
+    // Executar a query para deletar as perguntas com tema_id igual ao temaId fornecido
+    DB::table('perguntas')
+        ->where('tema_id', $temaId)
+        ->delete();
+
+    return response()->json("Perguntas deletadas para o tema com ID $temaId");
+}
+    public function softDeleteEmCascata($id){
+        $result = $this->
+        // ->delete();
+
+
+        return response()->json($result);
+    }
 }

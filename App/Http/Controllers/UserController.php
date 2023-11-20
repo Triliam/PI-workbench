@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function store(Request $request) {
 
-      
+
         $request->validate($this->user->rules(), $this->user->feedback());
         $user = User::create([
             'name'=>$request->input('name'),
@@ -61,5 +61,22 @@ class UserController extends Controller
         $users = User::where('level', 1)->get();
         return response()->json($users);
     }
+
+    public function blockUser($id)
+    {
+        // Encontrar o usuário pelo ID
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não encontrado'], 404);
+        }
+
+        // Atualizar o campo 'bloqueado' para true (ou 1, dependendo do tipo de campo)
+        $user->bloqueado = 1;
+        $user->save();
+
+        return response()->json(['message' => 'Usuário bloqueado com sucesso']);
+    }
 }
+
 
