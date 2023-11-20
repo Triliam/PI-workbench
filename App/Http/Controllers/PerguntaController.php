@@ -280,13 +280,13 @@ class PerguntaController extends Controller
     }
 
     public function retornaPerguntasOffline() {
-        $result = Pergunta::where('pergunta_estado', 0)->with('resposta')->get();
+        $result = Pergunta::where('pergunta_estado', 0)->with('tema', 'resposta')->get();
 
         return response()->json($result);
     }
 
     public function retornaPerguntasOnline() {
-        $result = Pergunta::where('pergunta_estado', 1)->with('resposta')->get();
+        $result = Pergunta::where('pergunta_estado', 1)->with('tema','resposta')->get();
 
         return response()->json($result);
     }
