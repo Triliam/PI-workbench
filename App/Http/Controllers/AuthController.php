@@ -52,7 +52,7 @@ class AuthController extends Controller
 
             foreach($perguntas as $p) {
                 if($p->pergunta_estado === 1) {
-                    if($p->pergunta_atualizacao === 1 or $p->user_id == $user->id){
+                    if($p->pergunta_atualizacao === 1 && $p->user_id == $user->id){
                         $arrayPerguntas[] = $p;
                     } else {
                         $arrayPerguntas = [];
@@ -100,7 +100,7 @@ class AuthController extends Controller
 
         $user = auth()->user();
         $id = $user->id;
-        
+
         if($user->level === 0) {
 
             $arrayPerguntas =[];
@@ -108,7 +108,7 @@ class AuthController extends Controller
 
             foreach($perguntas as $p) {
                 if($p->pergunta_estado === 1) {
-                    if($p->pergunta_atualizacao === 1 or $p->user_id == $id){
+                    if($p->pergunta_atualizacao === 1 && $p->user_id == $id){
                         $arrayPerguntas[] = $p;
                     } else {
                         $arrayPerguntas = [];
