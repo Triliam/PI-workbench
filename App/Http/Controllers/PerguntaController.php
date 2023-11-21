@@ -166,6 +166,13 @@ class PerguntaController extends Controller
         return response()->json($pergunta, 200);
     }
 
+    public function atualizacao0($id){
+        $pergunta = $this->pergunta->find($id);
+        $pergunta->pergunta_atualizacao = 0;
+        $pergunta->save();
+        return response()->json("Pergunta e resposta atualizadas 0!");
+    }
+
     public function updateTogether(Request $request, $id) {
 
         $pergunta = $this->pergunta->find($id);
@@ -189,36 +196,36 @@ class PerguntaController extends Controller
         return response()->json("Pergunta e resposta atualizadas com sucesso!", 200);
     }
 
-    public function perguntaEstado($id) {
-        //$pergunta = $this->pergunta->find($id);
-        $result = Pergunta::where('id', $id)->first();
-        if($result->pergunta_estado == 0){
-            return response()->json(['msg'=>'Pergunta offline', 'perguntaEstado' => $result->pergunta_estado]);
-        }
-        return response()->json(['msg'=>'Pergunta online', 'perguntaEstado' => $result->pergunta_estado]);
-    }
+    // public function perguntaEstado($id) {
+    //     //$pergunta = $this->pergunta->find($id);
+    //     $result = Pergunta::where('id', $id)->first();
+    //     if($result->pergunta_estado == 0){
+    //         return response()->json(['msg'=>'Pergunta offline', 'perguntaEstado' => $result->pergunta_estado]);
+    //     }
+    //     return response()->json(['msg'=>'Pergunta online', 'perguntaEstado' => $result->pergunta_estado]);
+    // }
 
-    public function perguntaOnline1($id) {
+    // public function perguntaOnline1($id) {
 
-        $pergunta = $this->pergunta->find($id);
+    //     $pergunta = $this->pergunta->find($id);
 
-        $pergunta->pergunta_estado = 1;
+    //     $pergunta->pergunta_estado = 1;
 
-        $pergunta->save();
+    //     $pergunta->save();
 
-        return response()->json("Pergunta online com sucesso!", 200);
-    }
+    //     return response()->json("Pergunta online com sucesso!", 200);
+    // }
 
-    public function perguntaOffline0($id) {
+    // public function perguntaOffline0($id) {
 
-        $pergunta = $this->pergunta->find($id);
+    //     $pergunta = $this->pergunta->find($id);
 
-        $pergunta->pergunta_estado = 0;
+    //     $pergunta->pergunta_estado = 0;
 
-        $pergunta->save();
+    //     $pergunta->save();
 
-        return response()->json("Pergunta offline com sucesso!", 200);
-    }
+    //     return response()->json("Pergunta offline com sucesso!", 200);
+    // }
 
     /**
      * Remove the specified resource from storage.

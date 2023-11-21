@@ -161,6 +161,8 @@ Route::prefix('l2')->middleware('jwt.auth')->group(function() {
     Route::prefix('l0')->middleware('jwt.auth')->group(function() {
 
         Route::post('esqueci-minha-senha', 'App\Http\Controllers\EmailController@enviarNovaSenha');
+        Route::post("visualizado/{id}", "App\Http\Controllers\PerguntaController@atualizacao0");
+
 
         Route::post("pergs", "App\Http\Controllers\PerguntaController@storeAluno");
         Route::post('logout', 'App\Http\Controllers\AuthController@logout');
