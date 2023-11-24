@@ -127,11 +127,5 @@ public function deletarRespostasPorPerguntas($temaId)
 
     return response()->json("Perguntas deletadas para o tema com ID $temaId");
 }
-    public function softDeleteEmCascata($id){
-        $result = $this->
-        // ->delete();
 
-
-        return response()->json($result);
-    }
 }
