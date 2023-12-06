@@ -9,23 +9,7 @@ use App\Models\Pergunta;
 
 class AuthController extends Controller
 {
-    public function loginToken(Request $request) {
 
-        $credenciais = $request->all(['email', 'password']);
-
-        //autenticacao (email e senha)
-
-        $token = auth('api')->attempt($credenciais);
-
-        //usuario autenticado com sucesso
-        if($token) {
-            return response()->json(['token' => $token]);
-            //erro de usuario ou senha
-        } else {
-            return response()->json(['erro' => 'Usuário ou senha inválidos!'], 403);
-        }
-        //403 = forbidden -> proibido (login invalido)
-    }
 //retornar array com perguntas feitas por este user e que o campo atualizacao esta como 0, se tiver como 1 retorna vazio
     public function login(Request $request)
     {
@@ -85,15 +69,6 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout() {
-        auth('api')->logout(); //cliente encaminhe um jwt valido
-        return response()->json(['msg' => 'Logout realizado com sucesso!']);
-    }
-
-    public function refresh() {
-        $token = auth('api')->refresh(); //cliente encaminhe um jwt valido
-        return response()->json(['token' => $token]);
-    }
 
 //retornar array com perguntas feitas por este user e que o campo atualizacao esta como 1, se tiver como 0 retorna vazio
     public function me() {

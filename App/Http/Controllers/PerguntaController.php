@@ -38,16 +38,7 @@ class PerguntaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
 
-        $request->validate($this->pergunta->rules(), $this->pergunta->feedback());
-        $pergunta = $this->pergunta->create([
-            'tema_id' => $request->tema_id,
-            'user_id' => $request->user_id,
-            'pergunta' => $request->pergunta
-        ]);
-        return response()->json($pergunta, 201);
-    }
 
     public function storeAluno(Request $request) {
 
@@ -87,22 +78,9 @@ class PerguntaController extends Controller
         return response()->json(['msg'=>'Pergunta com atualização', 'perguntaAtualizacao' => $result->pergunta_atualizacao]);
     }
 
-    //rota para o front de pergunta nao visualizada
-    public function perguntaAtualizacao0($id) {
-        $pergunta = $this->pergunta->find($id);
-        $pergunta->pergunta_atualizacao = 0;
-        $pergunta->save();
 
-        return response()->json('Pergunta sem atualização');
-    }
 
-     //rota para o front de pergunta visualizada
-    public function perguntaAtualizacao1($id) {
-        $pergunta = $this->pergunta->find($id);
-        $pergunta->pergunta_atualizacao = 1;
-        $pergunta->save();
-        return response()->json('Pergunta com atualização');
-    }
+
 
     public function storeTogether(Request $request) {
 
@@ -110,9 +88,7 @@ class PerguntaController extends Controller
         $pergSugerida = 0;
 
         //pergunta_atualizacao vai receber valor 0 default
-        //se pergunta_atualizacao receber valor 0 vai retornar na perguntaAtualizacao0()
-        //se pergunta_atualizacao recebe valor 1 retorna na funcao perguntaAtualizacao1()
-        //null?
+
         $pergAtualizacao = 0;
 
         $pergunta = Pergunta::create([
@@ -139,13 +115,7 @@ class PerguntaController extends Controller
      * @param  \App\Models\Pergunta  $pergunta
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        $pergunta = $this->pergunta->find($id);
-        if($pergunta === null) {
-            return response()->json(['erro' => 'n existe'], 404);
-        }
-        return response()->json($pergunta, 200);
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -166,12 +136,7 @@ class PerguntaController extends Controller
         return response()->json($pergunta, 200);
     }
 
-    public function atualizacao0($id){
-        $pergunta = $this->pergunta->find($id);
-        $pergunta->pergunta_atualizacao = 0;
-        $pergunta->save();
-        return response()->json("Pergunta e resposta atualizadas 0!");
-    }
+
 
     public function updateTogether(Request $request, $id) {
 
@@ -196,36 +161,6 @@ class PerguntaController extends Controller
         return response()->json("Pergunta e resposta atualizadas com sucesso!", 200);
     }
 
-    // public function perguntaEstado($id) {
-    //     //$pergunta = $this->pergunta->find($id);
-    //     $result = Pergunta::where('id', $id)->first();
-    //     if($result->pergunta_estado == 0){
-    //         return response()->json(['msg'=>'Pergunta offline', 'perguntaEstado' => $result->pergunta_estado]);
-    //     }
-    //     return response()->json(['msg'=>'Pergunta online', 'perguntaEstado' => $result->pergunta_estado]);
-    // }
-
-    // public function perguntaOnline1($id) {
-
-    //     $pergunta = $this->pergunta->find($id);
-
-    //     $pergunta->pergunta_estado = 1;
-
-    //     $pergunta->save();
-
-    //     return response()->json("Pergunta online com sucesso!", 200);
-    // }
-
-    // public function perguntaOffline0($id) {
-
-    //     $pergunta = $this->pergunta->find($id);
-
-    //     $pergunta->pergunta_estado = 0;
-
-    //     $pergunta->save();
-
-    //     return response()->json("Pergunta offline com sucesso!", 200);
-    // }
 
     /**
      * Remove the specified resource from storage.
@@ -233,14 +168,7 @@ class PerguntaController extends Controller
      * @param  \App\Models\Pergunta  $pergunta
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        $pergunta = $this->pergunta->find($id);
-        if($pergunta === null) {
-            return response()->json(['erro' => 'Pergunta não existe.'], 404);
-        }
-        $pergunta->delete();
-        return ['msg' => 'Pergunta removida'];
-    }
+
 
     public function destroyTogether($id) {
         $pergunta = $this->pergunta->find($id);
@@ -255,17 +183,7 @@ class PerguntaController extends Controller
         return ['msg' => 'Pergunta e resposta removidas.'];
     }
 
-    public function getData() {
-        $perguntas = Pergunta::with('tema', 'resposta')->get();
-        $temas = Tema::all();
-        $icones = Icone::all();
 
-        return response()->json([
-            'perguntas' => $perguntas,
-            'temas' => $temas,
-            'icones' => $icones,
-        ]);
-    }
 
     public function indexFaq() {
         $result = DB::table('temas')
