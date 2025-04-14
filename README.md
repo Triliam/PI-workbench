@@ -5,11 +5,17 @@
 ## FAQ-FATEC (Backend)
 
 Desenvolvimento do backend para um Portal de gerenciamento de conteúdo (FAQ).
+
 Laravel;
+
 Postman;
+
 API Rest.
 
+<br>
+
 Conexão com o banco de dados Workbench.
+
 Integração com o React no frontend.
 
 
