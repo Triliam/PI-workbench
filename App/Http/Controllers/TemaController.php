@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class TemaController extends Controller
 {
-
+    protected $tema;
     public function __construct(Tema $tema) {
         $this->tema = $tema;
     }

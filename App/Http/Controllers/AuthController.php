@@ -90,10 +90,10 @@ class AuthController extends Controller
         return response()->json(['msg' => 'Logout realizado com sucesso!']);
     }
 
-    public function refresh() {
-        $token = auth('api')->refresh(); //cliente encaminhe um jwt valido
-        return response()->json(['token' => $token]);
-    }
+    // public function refresh() {
+    //     $token = auth('api')->refresh(); //cliente encaminhe um jwt valido
+    //     return response()->json(['token' => $token]);
+    // }
 
 //retornar array com perguntas feitas por este user e que o campo atualizacao esta como 1, se tiver como 0 retorna vazio
     public function me() {

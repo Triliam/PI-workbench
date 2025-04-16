@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
+    protected $user;
     public function __construct(User $user) {
         $this->user = $user;
     }

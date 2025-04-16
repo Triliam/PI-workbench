@@ -13,6 +13,7 @@ use App\Models\Resposta;
 
 class PerguntaController extends Controller
 {
+    protected $pergunta;
 
     public function __construct(Pergunta $pergunta) {
         $this->pergunta = $pergunta;
@@ -122,7 +123,7 @@ class PerguntaController extends Controller
             'pergunta_sugerida' => $pergSugerida,
             'pergunta_atualizacao' => $pergAtualizacao,
 
-            //adm/cola escolhe se a pergunta permanece offline(0) ou vai pra exibicao online(1)
+            //adm/colaborador escolhe se a pergunta permanece offline(0) ou vai pra exibicao online(1)
             'pergunta_estado' => $request->pergunta_estado
         ]);
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 
 
 class EmailController extends Controller {
+    
     public function enviarNovaSenha(Request $request) {
         $usuario = User::where('email', $request->email)->first();
 

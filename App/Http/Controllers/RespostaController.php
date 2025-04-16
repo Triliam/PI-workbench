@@ -9,6 +9,7 @@ use App\Repositories\RespostaRepository;
 
 class RespostaController extends Controller
 {
+    protected $resposta;
 
     public function __construct(Resposta $resposta) {
         $this->resposta = $resposta;

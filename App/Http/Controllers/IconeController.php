@@ -7,7 +7,7 @@ use App\Models\Icone;
 
 class IconeController extends Controller
 {
-
+    protected $icone;
     public function __construct(Icone $icone) {
         $this->icone = $icone;
     }
@@ -20,7 +20,7 @@ class IconeController extends Controller
 
     public function store(Request $request) {
         $icone = $this->icone->create([
-           
+
             'icone' => $request->icone
         ]);
         return response()->json($icone, 201);
